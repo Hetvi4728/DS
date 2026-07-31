@@ -3,7 +3,7 @@
 #include <cctype>
 using namespace std;
 
-class Stack
+class Stack 
 {
 public:
     int arr[100];
