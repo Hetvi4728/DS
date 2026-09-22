@@ -186,6 +186,36 @@ void delete_at_position(int pos)
     }
 }
 
+int min()
+{
+    int min_value = first->data;
+    struct node *temp = first->next;
+    while (temp != first)
+    {
+        if (temp->data < min_value)
+        {
+            min_value = temp->data;
+        }
+        temp = temp->next;
+    }
+    return min_value;
+}
+
+int max()
+{
+    int max_value = first->data;
+    struct node *temp = first->next;
+    while (temp != first)
+    {
+        if (temp->data > max_value)
+        {
+            max_value = temp->data;
+        }
+        temp = temp->next;
+    }
+    return max_value;
+}
+
 void display()
 {
     struct node *temp;
@@ -242,6 +272,8 @@ int main()
         cout << "6. Delete from position" << endl;
         cout << "7. Display list" << endl;
         cout << "8. Display list in reverse" << endl;
+        cout << "9. Find minimum value" << endl;
+        cout << "10. Find maximum value" << endl;
         cout << "0. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
@@ -281,6 +313,12 @@ int main()
             break;
         case 8:
             display_reverse();
+            break;
+        case 9:
+            cout << "Minimum value in the list: " << min() << endl;
+            break;
+        case 10:
+            cout << "Maximum value in the list: " << max() << endl;
             break;
         case 0:
             cout << "Exiting..." << endl;
