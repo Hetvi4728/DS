@@ -3,8 +3,8 @@ using namespace std;
 
 struct Node
 {
-    string question;
-    string options[4];
+    char question[100];
+    char options[4][50];
     char answer;
     Node *next;
 };
@@ -15,21 +15,20 @@ void addQuestion()
 {
     Node *newNode = new Node;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     cout << "Enter question: ";
-    getline(cin, newNode->question);
+    cin >> ws;
+    cin >> newNode->question;
 
     for (int i = 0; i < 4; i++)
     {
         cout << "Enter option " << char('A' + i) << ": ";
-        getline(cin, newNode->options[i]);
+        cin >> ws;
+        cin >> newNode->options[i];
     }
 
     cout << "Enter correct answer (A/B/C/D): ";
     cin >> newNode->answer;
 
-    newNode->answer = toupper(newNode->answer);
     newNode->next = NULL;
 
     if (head == NULL)
@@ -41,9 +40,7 @@ void addQuestion()
         Node *temp = head;
 
         while (temp->next != NULL)
-        {
             temp = temp->next;
-        }
 
         temp->next = newNode;
     }
@@ -54,7 +51,7 @@ void addQuestion()
 void displayQuestions()
 {
     Node *temp = head;
-    int count = 1;
+    int i = 1;
 
     if (head == NULL)
     {
@@ -64,14 +61,10 @@ void displayQuestions()
 
     while (temp != NULL)
     {
-        cout << "\nQ" << count++ << ". "
-             << temp->question << "\n";
+        cout << "\nQ" << i++ << ". " << temp->question << "\n";
 
-        for (int i = 0; i < 4; i++)
-        {
-            cout << char('A' + i) << ". "
-                 << temp->options[i] << "\n";
-        }
+        for (int j = 0; j < 4; j++)
+            cout << char('A' + j) << ". " << temp->options[j] << "\n";
 
         temp = temp->next;
     }
@@ -80,13 +73,12 @@ void displayQuestions()
 void startQuiz()
 {
     Node *temp = head;
-    int score = 0;
-    int total = 0;
+    int score = 0, total = 0;
     char choice;
 
     if (head == NULL)
     {
-        cout << "No questions available. Add questions first.\n";
+        cout << "No questions available.\n";
         return;
     }
 
@@ -94,39 +86,31 @@ void startQuiz()
     {
         total++;
 
-        cout << "\nQ" << total << ". "
-             << temp->question << "\n";
+        cout << "\nQ" << total << ". " << temp->question << "\n";
 
         for (int i = 0; i < 4; i++)
-        {
-            cout << char('A' + i) << ". "
-                 << temp->options[i] << "\n";
-        }
+            cout << char('A' + i) << ". " << temp->options[i] << "\n";
 
-        cout << "Enter your answer (A/B/C/D): ";
+        cout << "Enter answer: ";
         cin >> choice;
 
-        choice = toupper(choice);
-
-        if (choice == temp->answer)
+        if (toupper(choice) == toupper(temp->answer))
         {
-            cout << "Correct answer!\n";
+            cout << "Correct!\n";
             score++;
         }
         else
         {
-            cout << "Wrong answer! Correct answer: "
-                 << temp->answer << "\n";
+            cout << "Wrong! Correct answer: " << temp->answer << "\n";
         }
 
         temp = temp->next;
     }
 
-    cout << "\n----- QUIZ RESULT -----\n";
-    cout << "Total Questions: " << total << "\n";
-    cout << "Correct Answers: " << score << "\n";
-    cout << "Wrong Answers: " << total - score << "\n";
-    cout << "Final Score: " << score << "/" << total << "\n";
+    cout << "\nTotal Questions: " << total;
+    cout << "\nCorrect Answers: " << score;
+    cout << "\nWrong Answers: " << total - score;
+    cout << "\nFinal Score: " << score << "/" << total << "\n";
 }
 
 int main()
@@ -135,12 +119,12 @@ int main()
 
     do
     {
-        cout << "\n===== QUIZ MANAGEMENT SYSTEM =====\n";
+        cout << "\n\n--- QUIZ MANAGEMENT SYSTEM ---\n";
         cout << "1. Add Question\n";
         cout << "2. Display Questions\n";
         cout << "3. Start Quiz\n";
         cout << "4. Exit\n";
-        cout << "Enter your choice: ";
+        cout << "Enter choice: ";
         cin >> choice;
 
         switch (choice)
@@ -148,23 +132,18 @@ int main()
         case 1:
             addQuestion();
             break;
-
         case 2:
             displayQuestions();
             break;
-
         case 3:
             startQuiz();
             break;
-
         case 4:
-            cout << "Exiting Quiz Management System.\n";
+            cout << "Thank you!\n";
             break;
-
         default:
-            cout << "Invalid choice! Try again.\n";
+            cout << "Invalid choice!\n";
         }
-
     } while (choice != 4);
 
     return 0;
